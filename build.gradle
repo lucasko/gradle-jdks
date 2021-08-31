@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task compileJava6(type: JavaCompile) {
+    source fileTree("$projectDir/src")
+    include "**/*.java"
+    destinationDir = file("${buildDir}/classes")
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+    classpath = files("${buildDir}/classes")
+}
+
+task Jar6(type: Jar) {
+    archiveBaseName = 'base-name'
+    archiveAppendix = 'appendix'
+    archiveVersion = '0.0.1'
+    from compileJava6.outputs
+    include "**/*.class"
+    manifest {
+        attributes "Main-Class": "App"
+    }
+    setDestinationDir file("$buildDir/lib")
+}
